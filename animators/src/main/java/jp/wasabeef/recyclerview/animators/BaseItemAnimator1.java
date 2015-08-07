@@ -23,6 +23,10 @@ import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -319,78 +323,74 @@ public abstract class BaseItemAnimator1 extends RecyclerView.ItemAnimator {
     @Override
     public boolean animateChange(ViewHolder oldHolder, ViewHolder newHolder,
             int fromX, int fromY, int toX, int toY) {
-        final float prevTranslationX = ViewCompat.getTranslationX(oldHolder.itemView);
-        final float prevTranslationY = ViewCompat.getTranslationY(oldHolder.itemView);
-        final float prevAlpha = ViewCompat.getAlpha(oldHolder.itemView);
-        endAnimation(oldHolder);
-        int deltaX = (int) (toX - fromX - prevTranslationX);
-        int deltaY = (int) (toY - fromY - prevTranslationY);
-        // recover prev translation state after ending animation
-        ViewCompat.setTranslationX(oldHolder.itemView, prevTranslationX);
-        ViewCompat.setTranslationY(oldHolder.itemView, prevTranslationY);
-        ViewCompat.setAlpha(oldHolder.itemView, prevAlpha);
-        if (newHolder != null && newHolder.itemView != null) {
-            // carry over translation values
-            endAnimation(newHolder);
-            ViewCompat.setTranslationX(newHolder.itemView, -deltaX);
-            ViewCompat.setTranslationY(newHolder.itemView, -deltaY);
-            ViewCompat.setAlpha(newHolder.itemView, 0);
-        }
+        ViewCompat.setAlpha(oldHolder.itemView, 0f);
+        ViewCompat.setAlpha(newHolder.itemView, 1f);
+        ViewCompat.setRotationX(newHolder.itemView, -720f);
+        ViewCompat.setScaleX(newHolder.itemView, 0.6f);
+        ViewCompat.setScaleY(newHolder.itemView, 0.6f);
         mPendingChanges.add(new ChangeInfo(oldHolder, newHolder, fromX, fromY, toX, toY));
         return true;
     }
 
     private void animateChangeImpl(final ChangeInfo changeInfo) {
-        final ViewHolder holder = changeInfo.oldHolder;
-        final View view = holder == null ? null : holder.itemView;
-        final ViewHolder newHolder = changeInfo.newHolder;
-        final View newView = newHolder != null ? newHolder.itemView : null;
-        if (view != null) {
-            mChangeAnimations.add(changeInfo.oldHolder);
-            final ViewPropertyAnimatorCompat oldViewAnim = ViewCompat.animate(view).setDuration(
-                    getChangeDuration());
-            oldViewAnim.translationX(changeInfo.toX - changeInfo.fromX);
-            oldViewAnim.translationY(changeInfo.toY - changeInfo.fromY);
-            oldViewAnim.alpha(0).setListener(new VpaListenerAdapter() {
-                @Override
-                public void onAnimationStart(View view) {
-                    dispatchChangeStarting(changeInfo.oldHolder, true);
-                }
+        AnimatorSet set = new AnimatorSet();
+        ObjectAnimator rotationX = ObjectAnimator.ofFloat(changeInfo.newHolder.itemView, "rotationX", 0f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(changeInfo.newHolder.itemView, "scaleX", 1.0f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(changeInfo.newHolder.itemView, "scaleY", 1.0f);
+        set.playTogether(rotationX, scaleX, scaleY);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.start();
 
-                @Override
-                public void onAnimationEnd(View view) {
-                    oldViewAnim.setListener(null);
-                    ViewCompat.setAlpha(view, 1);
-                    ViewCompat.setTranslationX(view, 0);
-                    ViewCompat.setTranslationY(view, 0);
-                    dispatchChangeFinished(changeInfo.oldHolder, true);
-                    mChangeAnimations.remove(changeInfo.oldHolder);
-                    dispatchFinishedWhenDone();
-                }
-            }).start();
-        }
-        if (newView != null) {
-            mChangeAnimations.add(changeInfo.newHolder);
-            final ViewPropertyAnimatorCompat newViewAnimation = ViewCompat.animate(newView);
-            newViewAnimation.translationX(0).translationY(0).setDuration(getChangeDuration()).
-                    alpha(1).setListener(new VpaListenerAdapter() {
-                @Override
-                public void onAnimationStart(View view) {
-                    dispatchChangeStarting(changeInfo.newHolder, false);
-                }
-
-                @Override
-                public void onAnimationEnd(View view) {
-                    newViewAnimation.setListener(null);
-                    ViewCompat.setAlpha(newView, 1);
-                    ViewCompat.setTranslationX(newView, 0);
-                    ViewCompat.setTranslationY(newView, 0);
-                    dispatchChangeFinished(changeInfo.newHolder, false);
-                    mChangeAnimations.remove(changeInfo.newHolder);
-                    dispatchFinishedWhenDone();
-                }
-            }).start();
-        }
+//        final ViewHolder holder = changeInfo.oldHolder;
+//        final View view = holder == null ? null : holder.itemView;
+//        final ViewHolder newHolder = changeInfo.newHolder;
+//        final View newView = newHolder != null ? newHolder.itemView : null;
+//        if (view != null) {
+//            mChangeAnimations.add(changeInfo.oldHolder);
+//            final ViewPropertyAnimatorCompat oldViewAnim = ViewCompat.animate(view).setDuration(
+//                    getChangeDuration());
+//            oldViewAnim.translationX(changeInfo.toX - changeInfo.fromX);
+//            oldViewAnim.translationY(changeInfo.toY - changeInfo.fromY);
+//            oldViewAnim.alpha(0).setListener(new VpaListenerAdapter() {
+//                @Override
+//                public void onAnimationStart(View view) {
+//                    dispatchChangeStarting(changeInfo.oldHolder, true);
+//                }
+//
+//                @Override
+//                public void onAnimationEnd(View view) {
+//                    oldViewAnim.setListener(null);
+//                    ViewCompat.setAlpha(view, 1);
+//                    ViewCompat.setTranslationX(view, 0);
+//                    ViewCompat.setTranslationY(view, 0);
+//                    dispatchChangeFinished(changeInfo.oldHolder, true);
+//                    mChangeAnimations.remove(changeInfo.oldHolder);
+//                    dispatchFinishedWhenDone();
+//                }
+//            }).start();
+//        }
+//        if (newView != null) {
+//            mChangeAnimations.add(changeInfo.newHolder);
+//            final ViewPropertyAnimatorCompat newViewAnimation = ViewCompat.animate(newView);
+//            newViewAnimation.translationX(0).translationY(0).setDuration(getChangeDuration()).
+//                    alpha(1).setListener(new VpaListenerAdapter() {
+//                @Override
+//                public void onAnimationStart(View view) {
+//                    dispatchChangeStarting(changeInfo.newHolder, false);
+//                }
+//
+//                @Override
+//                public void onAnimationEnd(View view) {
+//                    newViewAnimation.setListener(null);
+//                    ViewCompat.setAlpha(newView, 1);
+//                    ViewCompat.setTranslationX(newView, 0);
+//                    ViewCompat.setTranslationY(newView, 0);
+//                    dispatchChangeFinished(changeInfo.newHolder, false);
+//                    mChangeAnimations.remove(changeInfo.newHolder);
+//                    dispatchFinishedWhenDone();
+//                }
+//            }).start();
+//        }
     }
 
     private void endChangeAnimation(List<ChangeInfo> infoList, ViewHolder item) {

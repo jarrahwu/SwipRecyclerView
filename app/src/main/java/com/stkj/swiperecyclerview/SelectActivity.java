@@ -16,6 +16,8 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.btn1).setOnClickListener(this);
         findViewById(R.id.btn2).setOnClickListener(this);
         findViewById(R.id.btn3).setOnClickListener(this);
+        findViewById(R.id.btn4).setOnClickListener(this);
+        findViewById(R.id.btn5).setOnClickListener(this);
     }
 
     private Intent newIntent(Class cls) {
@@ -40,6 +42,14 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
 
         if(v.getId() == R.id.btn3) {
             startActivity(newIntent(RecyclerViewAnimatorSample.class));
+        }
+
+        if(v.getId() == R.id.btn4) {
+            startActivity(newIntent(RecyclerViewMultiTypeSample.class));
+        }
+
+        if(v.getId() == R.id.btn5) {
+            startActivity(newIntent(RecyclerViewStaggeredSample.class));
         }
     }
 }

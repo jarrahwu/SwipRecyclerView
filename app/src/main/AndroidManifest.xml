@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.stkj.swiperecyclerview" >
+    package="com.stkj.swiperecyclerview">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".SelectActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,20 +18,22 @@
         </activity>
         <activity
             android:name=".RecyclerViewSwipeSample"
-            android:label="@string/title_activity_swipe_recycler_view_sample" >
-        </activity>
+            android:label="@string/title_activity_swipe_recycler_view_sample"></activity>
         <activity
             android:name=".RecyclerViewOriginalSample"
-            android:label="@string/title_activity_select" >
-        </activity>
+            android:label="@string/title_activity_select"></activity>
         <activity
             android:name=".RecyclerViewDecorationSample"
-            android:label="@string/title_activity_recycler_view_decoration_sample" >
-        </activity>
+            android:label="@string/title_activity_recycler_view_decoration_sample"></activity>
         <activity
             android:name=".RecyclerViewAnimatorSample"
-            android:label="@string/title_activity_animator_sample" >
-        </activity>
+            android:label="@string/title_activity_animator_sample"></activity>
+        <activity
+            android:name=".RecyclerViewMultiTypeSample"
+            android:label="@string/title_activity_recycler_view_multitype_sample"></activity>
+        <activity
+            android:name=".RecyclerViewStaggeredSample"
+            android:label="@string/title_activity_recycler_view_multitype_sample" />
     </application>
 
 </manifest>

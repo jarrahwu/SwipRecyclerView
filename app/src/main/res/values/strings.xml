@@ -8,4 +8,6 @@
     <string name="title_activity_recycler_view_decoration_sample">RecyclerViewDecorationSample
     </string>
     <string name="title_activity_animator_sample">AnimatorSample</string>
+    <string name="title_activity_recycler_view_multitype_sample">RecyclerViewMultitypeSample
+    </string>
 </resources>

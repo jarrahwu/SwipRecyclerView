@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SwipeRecyclerView</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_swipe_recycler_view_sample">SwipeRecyclerViewSample</string>
+    <string name="title_activity_select">SelectActivity</string>
+    <string name="title_activity_recycler_view_decoration_sample">RecyclerViewDecorationSample
+    </string>
+    <string name="title_activity_animator_sample">AnimatorSample</string>
+</resources>
